@@ -15,16 +15,15 @@ public interface UserConstant {
      */
     String USER_LOGIN_STATE = "userLoginState";
 
-    // ---权限---
     /**
-     * 默认权限
+     * 用户注册验证码
      */
-    int DEFAULT_ROLE = 0;
+    String USER_REGISTER_CAPTCHA = "userRegisterCaptcha";
 
     /**
-     * 管理员权限
+     * 用户改密验证码
      */
-    int ADMIN_ROLE = 1;
+    String USER_FORGET_PWD_CAPTCHA = "userForgetPwdCaptcha";
 
     /**
      * 检验账号是否包含特殊字符正则表达式

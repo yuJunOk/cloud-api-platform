@@ -73,7 +73,7 @@ public class UserVo implements Serializable {
     /**
      * 角色值
      */
-    private Integer userRole;
+    private String userRole;
 
     /**
      * 创建时间
@@ -93,11 +93,10 @@ public class UserVo implements Serializable {
         this.id = userDo.getId();
         this.userName = userDo.getUserName();
         this.loginName = userDo.getLoginName();
-        this.avatarUrl = userDo.getAvatarUrl();
+        this.avatarUrl = userDo.getUserAvatar();
         this.gender = userDo.getGender();
         this.phone = userDo.getPhone();
         this.email = userDo.getEmail();
-        this.status = userDo.getStatus();
         this.userRole = userDo.getUserRole();
         this.createTime = userDo.getCreateTime();
     }

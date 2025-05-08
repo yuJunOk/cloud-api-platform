@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
 
 spring:
   application:
@@ -12,11 +12,14 @@ spring:
         server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: api-mock
-          uri: lb://api-mock
+        - id: api-service-mock
+          uri: lb://api-service-mock
           predicates:
             - Path=/api/mock/**
-
+        - id: api-service-user
+          uri: lb://api-service-user
+          predicates:
+            - Path=/api/user/**
 knife4j:
   gateway:
     # ① 第一个配置，开启gateway聚合组件

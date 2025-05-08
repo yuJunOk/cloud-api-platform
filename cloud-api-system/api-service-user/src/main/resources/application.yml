@@ -1,0 +1,42 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /api/user
+
+spring:
+  # 指定环境，决定选择配置文件
+  profiles:
+    active: local
+  application:
+    name: api-service-user
+  # session 失效时间
+  session:
+    timeout: 86400
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: 填写数据库账号
+    password: 填写数据库密码
+    url: jdbc:mysql://localhost:3306/db_multi?characterEncoding=UTF8&useUnicode=true&useSSL=false
+  mail:
+    protocol: smtp #邮件协议
+    host: 填写邮箱smtp服务器地址 #网易邮箱smtp服务器地址
+    port: 25 #默认端口
+    username: 填写发件人邮箱 #发件人邮箱地址
+    password: 填写邮箱smtp授权码 #授权码
+    default-encoding: UTF-8 #编码字符集
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+knife4j:
+  enable: true
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  #configuration:
+  #  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #mybatis日志打印

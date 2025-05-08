@@ -15,27 +15,31 @@ public enum ResponseCode {
     /**
      * 操作成功
      */
-    SUCCESS("操作成功", 23200),
+    SUCCESS("操作成功", 0),
     /**
      * 参数错误
      */
-    PARAMS_ERROR("参数错误", 23400),
-    /**
-     * 参数错误
-     */
-    NOT_FOUND("请求参数不存在", 23404),
+    PARAMS_ERROR("请求参数错误", 40000),
     /**
      * 未登录
      */
-    UNAUTHORIZED("未登录", 23401),
+    UNAUTHORIZED("未登录", 40100),
     /**
      * 操作无权限
      */
-    FORBIDDEN("操作无权限", 23403),
+    FORBIDDEN("操作无权限", 40300),
+    /**
+     * 参数错误
+     */
+    NOT_FOUND("请求数据不存在", 40400),
     /**
      * 系统内部异常
      */
-    ERROR("系统内部异常", 23500);
+    SYSTEM_ERROR("系统内部异常", 50000),
+    /**
+     * 操作失败
+     */
+    OPERATION_ERROR("操作失败", 50001);
 
     private final String message;
     private final long code;

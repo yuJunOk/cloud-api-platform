@@ -1,5 +1,7 @@
 package com.api.common.constant;
 
+import static com.api.common.constant.SystemConstant.SYSTEM_NAME;
+
 /**
  * @author pengYuJun
  */
@@ -12,11 +14,11 @@ public interface MailConstant {
     /**
      * bug发送标题
      */
-    String BUG_MAIL_TITLE ="自定义管理系统Bug提醒";
+    String BUG_MAIL_TITLE = SYSTEM_NAME + "Bug提醒";
 
     /**
      * 验证码发送标题
      */
-    String CAPTCHA_MAIL_TITLE ="自定义管理系统验证码";
+    String CAPTCHA_MAIL_TITLE = SYSTEM_NAME + "自定义管理系统验证码";
 
 }

@@ -43,6 +43,10 @@ public class ResponseEntity<T> implements Serializable {
         this.data = data;
     }
 
+    static public <T> ResponseEntity<T> success() {
+        return new ResponseEntity<>(ResponseCode.SUCCESS);
+    }
+
     static public <T> ResponseEntity<T> success(T data) {
         return new ResponseEntity<>(ResponseCode.SUCCESS, data);
     }
@@ -56,6 +60,6 @@ public class ResponseEntity<T> implements Serializable {
     }
 
     static public <T> ResponseEntity<T> failed(String message) {
-        return new ResponseEntity<>(ResponseCode.ERROR, null, message);
+        return new ResponseEntity<>(ResponseCode.OPERATION_ERROR, null, message);
     }
 }

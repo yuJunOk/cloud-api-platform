@@ -1,27 +1,24 @@
-package com.api.model.domain;
+package com.api.model.bo;
 
+import com.api.model.domain.UserDo;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
-import lombok.Data;
-
 /**
- * 用户表
  * @author pengYuJun
- * @TableName tb_user
  */
-@TableName(value ="tb_user")
 @Data
-public class UserDo implements Serializable {
+public class LoginUserBo implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 7738608283609313472L;
 
     /**
      * id
@@ -50,16 +47,6 @@ public class UserDo implements Serializable {
     private Integer gender;
 
     /**
-     * 账号
-     */
-    private String loginName;
-
-    /**
-     * 密码
-     */
-    private String loginPwd;
-
-    /**
      * accessKey
      */
     private String accessKey;
@@ -68,6 +55,16 @@ public class UserDo implements Serializable {
      * secretKey
      */
     private String secretKey;
+
+    /**
+     * 账号
+     */
+    private String loginName;
+
+    /**
+     * 密码
+     */
+    private String loginPwd;
 
     /**
      * 电话
@@ -80,18 +77,23 @@ public class UserDo implements Serializable {
     private String email;
 
     /**
+     * 用户状态
+     */
+    private Integer status;
+
+    /**
      * 创建时间
      */
     private Date createTime;
 
     /**
-     * 更新时间
+     * do转 bo
+     * @param userDo
+     * @return
      */
-    private Date updateTime;
-
-    /**
-     * 是否删除
-     */
-    @TableLogic
-    private Integer deleted;
+    public static LoginUserBo doToBo(UserDo userDo) {
+        LoginUserBo loginUserBo = new LoginUserBo();
+        BeanUtils.copyProperties(userDo, loginUserBo);
+        return loginUserBo;
+    }
 }

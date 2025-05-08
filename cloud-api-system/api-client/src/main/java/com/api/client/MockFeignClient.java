@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * 模拟服务
  * @author pengYuJun
  */
-@FeignClient(name = "api-mock", path = "/api/mock/inner")
+@FeignClient(name = "api-service-mock", path = "/api/mock/inner")
 public interface MockFeignClient {
     /**
      * hello一下

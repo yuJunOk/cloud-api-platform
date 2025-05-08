@@ -20,7 +20,8 @@
         <module>api-model</module>
         <module>api-gateway</module>
         <module>api-client</module>
-        <module>api-mock</module>
+        <module>api-service-mock</module>
+        <module>api-service-user</module>
     </modules>
     <dependencies>
         <dependency>
@@ -68,8 +69,9 @@
         <!--    mybatis    -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.0</version>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <version>3.0.4</version>
+            <scope>test</scope>
         </dependency>
         <!--    mybatis-plus    -->
         <dependency>
@@ -86,7 +88,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>1.18.32</version>
+            <scope>provided</scope>
         </dependency>
         <!-- hutool-all工具类 -->
         <dependency>
@@ -141,18 +144,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.example.cloudapisystem.CloudApiSystemApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
