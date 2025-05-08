@@ -2,34 +2,32 @@
   <div class="login-form-wrapper">
     <div class="login-form-title">欢迎登录 母鸡API</div>
     <div class="login-form-sub-title">登录表单</div>
-    <div class="login-form-error-msg">{{ errorMessage }}</div>
     <a-form
-      ref="loginForm"
-      :model="userInfo"
       class="login-form"
       layout="vertical"
+      :model="loginFormValue"
       @submit="handleSubmit"
     >
       <a-form-item
-        field="username"
-        :rules="[{ required: true, message: '用户名不能为空' }]"
+        field="email"
+        :rules="[{ required: true, message: '登录邮箱不能为空' }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
-        <a-input v-model="userInfo.username" placeholder="请填入用户名">
+        <a-input v-model="loginFormValue.email" placeholder="请填入登录邮箱">
           <template #prefix>
-            <icon-user />
+            <icon-email />
           </template>
         </a-input>
       </a-form-item>
       <a-form-item
-        field="password"
+        field="loginPwd"
         :rules="[{ required: true, message: '密码不能为空' }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
         <a-input-password
-          v-model="userInfo.password"
+          v-model="loginFormValue.loginPwd"
           placeholder="请填入密码"
           allow-clear
         >
@@ -42,14 +40,19 @@
         <div class="login-form-password-actions">
           <a-checkbox
             checked="rememberPassword"
-            :model-value="loginConfig.rememberPassword"
-            @change="setRememberPassword as any"
+            :model-value="loginConfig.remember"
+            @change="setRememberLogin"
           >
             记住密码
           </a-checkbox>
-          <a-link>忘记密码</a-link>
+          <a-link @click="toForgetPwd">忘记密码</a-link>
         </div>
-        <a-button type="primary" html-type="submit" long :loading="loading">
+        <a-button
+          type="primary"
+          html-type="submit"
+          long
+          :loading="loginLoading"
+        >
           登录
         </a-button>
         <a-button
@@ -66,37 +69,74 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
-import { ValidatedError } from "@arco-design/web-vue/es/form/interface";
-import { useStorage } from "@vueuse/core";
+import { reactive, ref } from "vue";
+import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
+import { IconEmail, IconLock } from "@arco-design/web-vue/es/icon";
+import { useStore } from "vuex";
+import { useStorage } from "@vueuse/core";
+import { LoginByEmailDto, UserControllerService } from "../../../../api/user";
+import ResponseCode from "@/models/enum/ResponseCode";
 
 const router = useRouter();
+const store = useStore();
 
-const errorMessage = ref("");
-
+/**
+ * 登录缓存设置
+ */
 const loginConfig = useStorage("login-config", {
-  rememberPassword: true,
-  username: "admin", // 演示默认值
-  password: "admin", // demo default value
+  remember: true,
+  email: "",
+  loginPwd: "",
 });
-const userInfo = reactive({
-  username: loginConfig.value.username,
-  password: loginConfig.value.password,
-});
+/**
+ * 表单信息
+ */
+const loginFormValue = reactive({
+  email: loginConfig.value.email,
+  loginPwd: loginConfig.value.loginPwd,
+} as LoginByEmailDto);
 
-const handleSubmit = async ({
-  values,
-}: {
-  errors: Record<string, ValidatedError> | undefined;
-  values: Record<string, any>;
-}) => {
-  console.log(values);
-};
-const setRememberPassword = (value: boolean) => {
-  loginConfig.value.rememberPassword = value;
+/**
+ * 登录
+ */
+const loginLoading = ref(false);
+const handleSubmit = async () => {
+  loginLoading.value = true;
+  const res = await UserControllerService.login(loginFormValue);
+  loginLoading.value = false;
+  // 登录成功，跳转到主页
+  if (res.code === ResponseCode.SUCCESS) {
+    if (loginConfig.value.remember) {
+      loginConfig.value.email = loginFormValue.email;
+      loginConfig.value.loginPwd = loginFormValue.loginPwd;
+    }
+    // 跳转
+    await store.dispatch("user/getLoginUser");
+    await router.replace("/");
+  } else {
+    message.error(res.message ?? "登录失败，请稍后再试");
+  }
 };
 
+/**
+ * 设置记住登录
+ * @param value
+ */
+const setRememberLogin = (value: boolean) => {
+  loginConfig.value.remember = value;
+};
+
+/**
+ * 跳转忘记密码页
+ */
+const toForgetPwd = () => {
+  router.replace("/forgetPwd");
+};
+
+/**
+ * 跳转注册页
+ */
 const toRegister = () => {
   router.replace("/register");
 };
@@ -118,12 +158,7 @@ const toRegister = () => {
   color: var(--color-text-3);
   font-size: 16px;
   line-height: 24px;
-}
-
-.login-form-error-msg {
-  height: 32px;
-  color: rgb(var(--red-6));
-  line-height: 32px;
+  margin-bottom: 32px;
 }
 
 .login-form-password-actions {

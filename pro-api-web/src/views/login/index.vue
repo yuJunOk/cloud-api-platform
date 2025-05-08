@@ -8,7 +8,8 @@
     <div class="content">
       <div class="content-inner">
         <LoginForm v-if="fromType == 'login'" />
-        <RegisterForm v-else />
+        <RegisterForm v-else-if="fromType == 'register'" />
+        <ForgerPwdForm v-else />
       </div>
       <div class="footer">
         <Footer />
@@ -22,21 +23,26 @@ import Footer from "@/components/Footer.vue";
 import LoginBanner from "./components/banner.vue";
 import LoginForm from "./components/login-form.vue";
 import RegisterForm from "./components/register-form.vue";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import ForgerPwdForm from "@/views/login/components/forger-pwd-form.vue";
+// 当前路由
+const route = useRoute();
 
-const router = useRouter();
-
-// 默认菜单选中
-const fromType = ref("login");
-
-// 路由跳转后，更新选中的菜单项
-router.afterEach((to, from, failure) => {
-  if (to.path.includes("login")) {
-    fromType.value = "login";
-  } else {
-    fromType.value = "register";
-  }
+// 直接通过计算属性响应路由变化
+const fromType = computed(() => {
+  console.log(
+    route.path.includes("login")
+      ? "login"
+      : route.path.includes("register")
+      ? "register"
+      : "forgetPwd"
+  );
+  return route.path.includes("login")
+    ? "login"
+    : route.path.includes("register")
+    ? "register"
+    : "forgetPwd";
 });
 </script>
 

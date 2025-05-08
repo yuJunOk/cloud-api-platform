@@ -1,5 +1,5 @@
 <template>
-  <ProBreadcrumd :items="['Home', 'List', 'App']" />
+  <ProBreadcrumd />
   <div class="home" style="text-align: center">
     <img alt="logo" src="../assets/images/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />

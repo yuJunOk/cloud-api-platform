@@ -1,28 +1,13 @@
 <template>
-  <div class="register-form-wrapper">
-    <div class="register-form-title">欢迎注册 母鸡API</div>
-    <div class="register-form-sub-title">注册表单</div>
+  <div class="forget-pwd-form-wrapper">
+    <div class="forget-pwd-form-title">忘记密码？ 母鸡API</div>
+    <div class="forget-pwd-form-sub-title">密码重设表单</div>
     <a-form
-      class="register-form"
+      class="forget-pwd-form"
       layout="vertical"
-      :model="registerFormValue"
+      :model="resetPwdFormValue"
       @submit="handleSubmit"
     >
-      <a-form-item
-        field="loginName"
-        :rules="[{ required: true, message: '账户名不能为空' }]"
-        :validate-trigger="['change', 'blur']"
-        hide-label
-      >
-        <a-input
-          v-model="registerFormValue.loginName"
-          placeholder="请填入账户名"
-        >
-          <template #prefix>
-            <icon-user />
-          </template>
-        </a-input>
-      </a-form-item>
       <a-form-item
         field="loginPwd"
         :rules="[{ required: true, message: '密码不能为空' }]"
@@ -30,8 +15,8 @@
         hide-label
       >
         <a-input-password
-          v-model="registerFormValue.loginPwd"
-          placeholder="请填入密码"
+          v-model="resetPwdFormValue.loginPwd"
+          placeholder="请填入新密码"
           allow-clear
         >
           <template #prefix>
@@ -46,8 +31,8 @@
         hide-label
       >
         <a-input-password
-          v-model="registerFormValue.checkPwd"
-          placeholder="请再次填入密码"
+          v-model="resetPwdFormValue.checkPwd"
+          placeholder="请再次填入新密码"
           allow-clear
         >
           <template #prefix>
@@ -61,7 +46,7 @@
         :validate-trigger="['change', 'blur']"
         hide-label
       >
-        <a-input v-model="registerFormValue.email" placeholder="请填入邮箱">
+        <a-input v-model="resetPwdFormValue.email" placeholder="请填入邮箱">
           <template #prefix>
             <icon-email />
           </template>
@@ -81,21 +66,22 @@
         hide-label
       >
         <a-input
-          v-model="registerFormValue.captcha"
+          v-model="resetPwdFormValue.captcha"
           placeholder="请输入验证码"
         />
       </a-form-item>
       <a-space :size="16" direction="vertical">
-        <div class="register-form-password-actions">
-          <a-link @click="toLogin">已有账户？去登录</a-link>
+        <div class="forget-pwd-form-password-actions">
+          <a-link @click="toLogin">想起来？回去登录</a-link>
+          <a-link @click="toRegister">未注册？去注册</a-link>
         </div>
         <a-button
           type="primary"
           html-type="submit"
           long
-          :loading="submitLoading"
+          :loading="resetLoading"
         >
-          注册
+          修改密码
         </a-button>
       </a-space>
     </a-form>
@@ -105,8 +91,11 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { IconUser, IconLock, IconEmail } from "@arco-design/web-vue/es/icon";
-import { UserControllerService, UserRegisterDto } from "../../../../api/user";
+import { IconLock, IconEmail } from "@arco-design/web-vue/es/icon";
+import {
+  ResetPwdByEmailDto,
+  UserControllerService,
+} from "../../../../api/user";
 import ResponseCode from "@/models/enum/ResponseCode";
 import message from "@arco-design/web-vue/es/message";
 import { useCountdown } from "@vueuse/core";
@@ -117,29 +106,28 @@ const router = useRouter();
 /**
  * 表单信息
  */
-const registerFormValue = reactive({
-  loginName: "",
+const resetPwdFormValue = reactive({
+  email: "",
   loginPwd: "",
   checkPwd: "",
-  email: "",
   captcha: "",
-} as UserRegisterDto);
+} as ResetPwdByEmailDto);
 
 /**
- * 注册提交
+ * 修改提交
  */
-const submitLoading = ref(false);
+const resetLoading = ref(false);
 const handleSubmit = async () => {
-  submitLoading.value = true;
-  const res = await UserControllerService.register(registerFormValue);
-  submitLoading.value = false;
-  // 注册成功，跳转到登录页
+  resetLoading.value = true;
+  const res = await UserControllerService.resetPwdByEmail(resetPwdFormValue);
+  resetLoading.value = false;
+  // 修改成功，跳转到登录页
   if (res.code === ResponseCode.SUCCESS) {
-    message.success("注册成功！");
+    message.success("修改成功！");
     // 跳转
     toLogin();
   } else {
-    message.error(res.message ?? "注册失败，请稍后再试");
+    message.error(res.message ?? "修改失败，请稍后再试");
   }
 };
 
@@ -162,12 +150,12 @@ const { remaining, start, stop, pause, resume } = useCountdown(60, {
 });
 
 const handleCaptcha = async () => {
-  if (!registerFormValue.email) {
+  if (!resetPwdFormValue.email) {
     message.warning("请先输入邮箱！");
     return;
   }
-  const res = await UserControllerService.sendRegisterCaptcha({
-    email: registerFormValue.email,
+  const res = await UserControllerService.sendResetPwdCaptcha({
+    email: resetPwdFormValue.email,
   });
   if (res.code === ResponseCode.SUCCESS) {
     message.success("发送成功，请到邮箱收件查看验证码");
@@ -178,38 +166,46 @@ const handleCaptcha = async () => {
 };
 
 /**
- * 跳转到登录页
+ * 设置记住登录
+ * @param value
  */
 const toLogin = () => {
   router.replace("/login");
 };
+
+/**
+ * 跳转注册页
+ */
+const toRegister = () => {
+  router.replace("/register");
+};
 </script>
 
 <style scoped>
-.register-form-wrapper {
+.forget-pwd-form-wrapper {
   width: 320px;
 }
 
-.register-form-title {
+.forget-pwd-form-title {
   color: var(--color-text-1);
   font-weight: 500;
   font-size: 24px;
   line-height: 32px;
 }
 
-.register-form-sub-title {
+.forget-pwd-form-sub-title {
   color: var(--color-text-3);
   font-size: 16px;
   line-height: 24px;
   margin-bottom: 32px;
 }
 
-.register-form-password-actions {
+.forget-pwd-form-password-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
-.register-form-login-btn {
+.forget-pwd-form-register-btn {
   color: var(--color-text-3) !important;
 }
 </style>
