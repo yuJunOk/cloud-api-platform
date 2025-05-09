@@ -44,7 +44,7 @@
             :size="32"
             :style="{ marginRight: '8px', cursor: 'pointer' }"
           >
-            <img alt="avatar" src="../assets/images/logo.png" />
+            <img v-if="avatar" alt="avatar" :src="avatar" />
           </a-avatar>
           <template #content>
             <a-doption>
@@ -70,11 +70,13 @@ import {
   IconFullscreenExit,
   IconSearch,
 } from "@arco-design/web-vue/es/icon";
+import store from "@/store";
 
 const { isFullscreen, toggle: toggleFullScreen } = useFullscreen();
 
 const avatar = computed(() => {
-  return "/assets/logo.jpg";
+  let loginUser = store.state.user.loginUser;
+  return loginUser.userAvatar;
 });
 
 const handleLogout = () => {
