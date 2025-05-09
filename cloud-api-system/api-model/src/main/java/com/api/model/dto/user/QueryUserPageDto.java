@@ -1,10 +1,8 @@
-package com.api.model.vo;
+package com.api.model.dto.user;
 
-import com.api.model.domain.UserDo;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
+import com.api.model.dto.PageDto;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,10 +11,9 @@ import java.util.Date;
 /**
  * @author pengYuJun
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserVo implements Serializable {
+public class QueryUserPageDto extends PageDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -8460210827254062525L;
@@ -67,11 +64,6 @@ public class UserVo implements Serializable {
     private String email;
 
     /**
-     * 用户状态
-     */
-    private Integer status;
-
-    /**
      * 角色值
      */
     private String userRole;
@@ -79,27 +71,10 @@ public class UserVo implements Serializable {
     /**
      * 创建时间
      */
-    @JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
     /**
      * 是否删除
      */
     private Integer deleted;
-
-    /**
-     * 根据User构建UserVo
-     * @param userDo 表用户类
-     */
-    public UserVo(UserDo userDo) {
-        this.id = userDo.getId();
-        this.userName = userDo.getUserName();
-        this.loginName = userDo.getLoginName();
-        this.userAvatar = userDo.getUserAvatar();
-        this.gender = userDo.getGender();
-        this.phone = userDo.getPhone();
-        this.email = userDo.getEmail();
-        this.userRole = userDo.getUserRole();
-        this.createTime = userDo.getCreateTime();
-    }
 }

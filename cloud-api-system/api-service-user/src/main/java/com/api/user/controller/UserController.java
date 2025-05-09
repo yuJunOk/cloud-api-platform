@@ -3,17 +3,19 @@ package com.api.user.controller;
 import cn.hutool.core.collection.CollectionUtil;
 import com.api.common.common.ResponseCode;
 import com.api.common.common.ResponseEntity;
+import com.api.common.constant.CommonConstant;
 import com.api.common.exception.BusinessException;
 import com.api.common.utils.CommonUtils;
 import com.api.model.bo.LoginUserBo;
 import com.api.model.domain.UserDo;
 import com.api.model.dto.IdBatchDto;
 import com.api.model.dto.IdDto;
-import com.api.model.dto.user.EmailDto;
-import com.api.model.dto.user.LoginByEmailDto;
-import com.api.model.dto.user.ResetPwdByEmailDto;
-import com.api.model.dto.user.UserRegisterDto;
+import com.api.model.dto.user.*;
+import com.api.model.vo.UserVo;
 import com.api.user.service.UserService;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
@@ -21,7 +23,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import static com.api.common.constant.UserConstant.USER_LOGIN_STATE;
-import static com.api.common.constant.UserConstant.USER_REGISTER_CAPTCHA;
 
 /**
  * @author pengYuJun
@@ -38,22 +39,20 @@ public class UserController {
     /**
      * 增
      *
-     * @param userDo
+     * @param addUserDto
      * @return
      */
     @PostMapping("/add")
-    public ResponseEntity<Long> add(@RequestBody UserDo userDo) {
-        if (userDo == null) {
+    public ResponseEntity<Long> add(@RequestBody AddUserDto addUserDto) {
+        if (addUserDto == null) {
             return new ResponseEntity<>(ResponseCode.PARAMS_ERROR);
         }
-        // 校验
-        userService.validAddParams(userDo);
         // 插入
-        boolean result = userService.save(userDo);
-        if (!result) {
+        Long id = userService.addUser(addUserDto);
+        if (id == null) {
             return new ResponseEntity<>(ResponseCode.OPERATION_ERROR);
         }
-        return ResponseEntity.success(userDo.getId());
+        return ResponseEntity.success(id);
     }
 
     /**
@@ -96,16 +95,16 @@ public class UserController {
 
     /**
      * 更新
-     * @param userDo
+     * @param updateUserDto
      * @return
      */
     @PostMapping("update")
-    public ResponseEntity<Boolean> update(@RequestBody UserDo userDo) {
-        if (userDo == null || userDo.getId() == null) {
+    public ResponseEntity<Boolean> update(@RequestBody UpdateUserDto updateUserDto) {
+        if (updateUserDto == null || updateUserDto.getId() == null) {
             return new ResponseEntity<>(ResponseCode.PARAMS_ERROR);
         }
         // 更新
-        boolean result = userService.updateById(userDo);
+        boolean result = userService.updateUserById(updateUserDto);
         if (!result) {
             return new ResponseEntity<>(ResponseCode.OPERATION_ERROR);
         }
@@ -128,6 +127,42 @@ public class UserController {
             return new ResponseEntity<>(ResponseCode.OPERATION_ERROR);
         }
         return ResponseEntity.success(userDo);
+    }
+
+    @PostMapping("page")
+    public ResponseEntity<Page<UserVo>> getByPage(@RequestBody QueryUserPageDto queryUserPageDto){
+        if (queryUserPageDto == null) {
+            return new ResponseEntity<>(ResponseCode.PARAMS_ERROR);
+        }
+        UserDo userQuery = new UserDo();
+        BeanUtils.copyProperties(queryUserPageDto, userQuery);
+        long current = queryUserPageDto.getCurrent();
+        long size = queryUserPageDto.getPageSize();
+        String sortField = queryUserPageDto.getSortField();
+        String sortOrder = queryUserPageDto.getSortOrder();
+        // 限制爬虫
+        if (size > CommonConstant.LIMIT_PAGE_SIZE){
+            throw new BusinessException(ResponseCode.PARAMS_ERROR);
+        }
+        LambdaQueryWrapper<UserDo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper
+                .like(StringUtils.hasText(queryUserPageDto.getUserName()), UserDo::getUserName, queryUserPageDto.getUserName())
+                .like(StringUtils.hasText(queryUserPageDto.getLoginName()), UserDo::getLoginName, queryUserPageDto.getLoginName())
+                .like(StringUtils.hasText(queryUserPageDto.getPhone()), UserDo::getPhone, queryUserPageDto.getPhone())
+                .eq(queryUserPageDto.getGender() != null, UserDo::getGender, queryUserPageDto.getGender())
+                .like(StringUtils.hasText(queryUserPageDto.getEmail()), UserDo::getEmail, queryUserPageDto.getEmail())
+                .eq(StringUtils.hasText(queryUserPageDto.getUserRole()), UserDo::getUserRole, queryUserPageDto.getUserRole());
+        Page<UserDo> page = userService.page(new Page<>(current, size), queryWrapper);
+        // 排序 (可以多排序)
+        if (StringUtils.hasText(sortField)) {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setAsc(CommonConstant.SORT_ORDER_ASC.equals(queryUserPageDto.getSortOrder()));
+            orderItem.setColumn(queryUserPageDto.getSortField());
+            page.addOrder(orderItem);
+        }
+        Page<UserVo> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        userVoPage.setRecords(page.getRecords().stream().map(UserVo::new).toList());
+        return ResponseEntity.success(userVoPage);
     }
 
     // endregion
@@ -172,7 +207,7 @@ public class UserController {
         if (CommonUtils.isAnyBlank(loginName, loginPwd, checkPwd, email, captcha)) {
             throw new BusinessException(ResponseCode.PARAMS_ERROR);
         }
-        long result = userService.register(loginName, loginPwd, checkPwd, email,  captcha, request);
+        long result = userService.registerByEmail(loginName, loginPwd, checkPwd, email,  captcha, request);
         return ResponseEntity.success(result);
     }
 

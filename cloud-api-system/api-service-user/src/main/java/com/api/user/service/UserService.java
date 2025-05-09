@@ -2,6 +2,8 @@ package com.api.user.service;
 
 import com.api.model.bo.LoginUserBo;
 import com.api.model.domain.UserDo;
+import com.api.model.dto.user.AddUserDto;
+import com.api.model.dto.user.UpdateUserDto;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -13,11 +15,19 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface UserService extends IService<UserDo> {
 
     /**
-     * 校验参数
-     * @param userDo
+     * 新增用户
+     *
+     * @param addUserDto
+     * @return
      */
-    void validAddParams(UserDo userDo);
+    Long addUser(AddUserDto addUserDto);
 
+    /**
+     * 更新
+     * @param updateUserDto
+     * @return
+     */
+    boolean updateUserById(UpdateUserDto updateUserDto);
 
     /**
      * 根据邮箱登录
@@ -38,7 +48,7 @@ public interface UserService extends IService<UserDo> {
      * @param request
      * @return
      */
-    long register(String loginName, String loginPwd, String checkPwd, String email, String captcha, HttpServletRequest request);
+    long registerByEmail(String loginName, String loginPwd, String checkPwd, String email, String captcha, HttpServletRequest request);
 
     /**
      * 发送注册验证码
