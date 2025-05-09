@@ -5,8 +5,9 @@ target/
 !**/src/test/**/target/
 
 ### CUSTOM ###
-application-local.yml
+application-dev.yml
 application-prod.yml
+.jar
 
 ### STS ###
 .apt_generated
