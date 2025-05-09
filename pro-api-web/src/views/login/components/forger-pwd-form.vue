@@ -1,7 +1,7 @@
 <template>
   <div class="forget-pwd-form-wrapper">
     <div class="forget-pwd-form-title">忘记密码？ 母鸡API</div>
-    <div class="forget-pwd-form-sub-title">密码重设表单</div>
+    <div class="forget-pwd-form-sub-title">请输入密码重设数据</div>
     <a-form
       class="forget-pwd-form"
       layout="vertical"

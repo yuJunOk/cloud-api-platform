@@ -1,7 +1,7 @@
 <template>
   <div class="login-form-wrapper">
     <div class="login-form-title">欢迎登录 母鸡API</div>
-    <div class="login-form-sub-title">登录表单</div>
+    <div class="login-form-sub-title">请输入登录数据</div>
     <a-form
       class="login-form"
       layout="vertical"

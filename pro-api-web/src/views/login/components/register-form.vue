@@ -1,7 +1,7 @@
 <template>
   <div class="register-form-wrapper">
     <div class="register-form-title">欢迎注册 母鸡API</div>
-    <div class="register-form-sub-title">注册表单</div>
+    <div class="register-form-sub-title">请输入注册数据</div>
     <a-form
       class="register-form"
       layout="vertical"
