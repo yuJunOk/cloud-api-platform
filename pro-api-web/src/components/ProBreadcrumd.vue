@@ -1,8 +1,6 @@
 <template>
   <a-breadcrumb class="pro-breadcrumb">
-    <a-breadcrumb-item>
-      <icon-apps />
-    </a-breadcrumb-item>
+    <a-breadcrumb-item> </a-breadcrumb-item>
     <a-breadcrumb-item v-for="item in menuHierarchy" :key="item">
       {{ item }}
     </a-breadcrumb-item>

@@ -1,4 +1,5 @@
 // initial state
+/* eslint-disable */
 import { StoreOptions } from "vuex";
 import ACCESS_ENUM from "@/access/accessEnum";
 import { UserControllerService } from "../../api/user";
@@ -14,6 +15,7 @@ export default {
   }),
   // 执行异步操作，并且通过commit触发 mutation 的更改 (actions 调用 mutation)
   actions: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async getLoginUser({ commit, state }, payload) {
       const res = await UserControllerService.getCurrentUser();
       if (res.code === RESPONSE_CODE.SUCCESS) {

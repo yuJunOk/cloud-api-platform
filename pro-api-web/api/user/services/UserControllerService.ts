@@ -2,17 +2,20 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { AddUserDto } from '../models/AddUserDto';
 import type { EmailDto } from '../models/EmailDto';
 import type { IdBatchDto } from '../models/IdBatchDto';
 import type { IdDto } from '../models/IdDto';
 import type { LoginByEmailDto } from '../models/LoginByEmailDto';
+import type { QueryUserPageDto } from '../models/QueryUserPageDto';
 import type { ResetPwdByEmailDto } from '../models/ResetPwdByEmailDto';
 import type { ResponseEntityBoolean } from '../models/ResponseEntityBoolean';
 import type { ResponseEntityLoginUserBo } from '../models/ResponseEntityLoginUserBo';
 import type { ResponseEntityLong } from '../models/ResponseEntityLong';
 import type { ResponseEntityObject } from '../models/ResponseEntityObject';
+import type { ResponseEntityPageUserVo } from '../models/ResponseEntityPageUserVo';
 import type { ResponseEntityUserDo } from '../models/ResponseEntityUserDo';
-import type { UserDo } from '../models/UserDo';
+import type { UpdateUserDto } from '../models/UpdateUserDto';
 import type { UserRegisterDto } from '../models/UserRegisterDto';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -24,7 +27,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static update(
-      requestBody: UserDo,
+        requestBody: UpdateUserDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -39,7 +42,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static sendResetPwdCaptcha(
-      requestBody: EmailDto,
+        requestBody: EmailDto,
     ): CancelablePromise<ResponseEntityObject> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -54,7 +57,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static sendRegisterCaptcha(
-      requestBody: EmailDto,
+        requestBody: EmailDto,
     ): CancelablePromise<ResponseEntityObject> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -69,7 +72,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static resetPwdByEmail(
-      requestBody: ResetPwdByEmailDto,
+        requestBody: ResetPwdByEmailDto,
     ): CancelablePromise<ResponseEntityObject> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -84,7 +87,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static register(
-      requestBody: UserRegisterDto,
+        requestBody: UserRegisterDto,
     ): CancelablePromise<ResponseEntityLong> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -95,11 +98,26 @@ export class UserControllerService {
     }
     /**
      * @param requestBody
+     * @returns ResponseEntityPageUserVo OK
+     * @throws ApiError
+     */
+    public static getByPage(
+        requestBody: QueryUserPageDto,
+    ): CancelablePromise<ResponseEntityPageUserVo> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/page',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
      * @returns ResponseEntityLoginUserBo OK
      * @throws ApiError
      */
     public static login(
-      requestBody: LoginByEmailDto,
+        requestBody: LoginByEmailDto,
     ): CancelablePromise<ResponseEntityLoginUserBo> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -114,7 +132,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static delete(
-      requestBody: IdDto,
+        requestBody: IdDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -129,7 +147,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static deleteBatch(
-      requestBody: IdBatchDto,
+        requestBody: IdBatchDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -144,7 +162,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static add(
-      requestBody: UserDo,
+        requestBody: AddUserDto,
     ): CancelablePromise<ResponseEntityLong> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -159,7 +177,7 @@ export class UserControllerService {
      * @throws ApiError
      */
     public static getById(
-      id: number,
+        id: number,
     ): CancelablePromise<ResponseEntityUserDo> {
         return __request(OpenAPI, {
             method: 'GET',

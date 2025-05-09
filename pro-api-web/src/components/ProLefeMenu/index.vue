@@ -2,7 +2,7 @@
   <div class="pro-left-menu">
     <a-menu
       :style="{ width: '200px', height: '100%' }"
-      :default-selected-keys="selectedKeys"
+      :selectedKeys="selectedKeys"
       show-collapse-button
       breakpoint="xl"
       @menu-item-click="onMenuClick"
@@ -23,11 +23,12 @@ const router = useRouter();
 const selectedKeys = ref(["/"]);
 
 // 点击跳转
-const onMenuClick = (key) => {
+const onMenuClick = (key: string) => {
   router.push({ path: key });
 };
 
 // 路由跳转后，更新选中的菜单项
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 router.afterEach((to, from, failure) => {
   selectedKeys.value = [to.path];
 });

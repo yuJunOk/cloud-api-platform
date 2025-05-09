@@ -3,6 +3,7 @@ import HomeView from "@/views/HomeView.vue";
 import LoginView from "@/views/login/index.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
+import ManageUserView from "@/views/ManageUserView/index.vue";
 
 export const proRoutes: Array<RouteRecordRaw> = [
   {
@@ -11,6 +12,15 @@ export const proRoutes: Array<RouteRecordRaw> = [
     component: HomeView,
     meta: {
       title: "主页 - 母鸡API",
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
+  {
+    path: "/manage/user",
+    name: "管理用户",
+    component: ManageUserView,
+    meta: {
+      title: "管理用户 - 母鸡API",
       access: ACCESS_ENUM.ADMIN,
     },
   },

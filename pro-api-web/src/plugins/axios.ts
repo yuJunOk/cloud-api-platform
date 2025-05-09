@@ -8,7 +8,6 @@ axios.interceptors.request.use(
     // Do something before request is sent
     config.withCredentials = true;
     config.baseURL = process.env["VUE_APP_BASE_URL"];
-    console.log(process.env["VUE_APP_BASE_URL"]);
     // 去掉open api生成的固定域名
     const url = new URL(config.url ?? "/");
     config.url = url.pathname;

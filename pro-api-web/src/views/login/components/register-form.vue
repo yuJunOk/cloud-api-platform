@@ -148,6 +148,7 @@ const handleSubmit = async () => {
  */
 const captchaLoading = ref(false);
 const captchaBtnText = ref("发送验证码");
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { remaining, start, stop, pause, resume } = useCountdown(60, {
   onComplete() {
     captchaLoading.value = false;

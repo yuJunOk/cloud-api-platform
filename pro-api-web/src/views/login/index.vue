@@ -31,13 +31,6 @@ const route = useRoute();
 
 // 直接通过计算属性响应路由变化
 const fromType = computed(() => {
-  console.log(
-    route.path.includes("login")
-      ? "login"
-      : route.path.includes("register")
-      ? "register"
-      : "forgetPwd"
-  );
   return route.path.includes("login")
     ? "login"
     : route.path.includes("register")
@@ -52,7 +45,7 @@ const fromType = computed(() => {
   height: 100vh;
 
   .banner {
-    width: 550px;
+    width: 26%;
     background: linear-gradient(163.85deg, #1d2129 0%, #00308f 100%);
   }
 
