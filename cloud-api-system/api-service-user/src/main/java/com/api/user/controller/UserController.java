@@ -160,9 +160,9 @@ public class UserController {
             orderItem.setColumn(queryUserPageDto.getSortField());
             page.addOrder(orderItem);
         }
-        Page<UserVo> userVoPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
-        userVoPage.setRecords(page.getRecords().stream().map(UserVo::new).toList());
-        return ResponseEntity.success(userVoPage);
+        Page<UserVo> voPage = new Page<>(page.getCurrent(), page.getSize(), page.getTotal());
+        voPage.setRecords(page.getRecords().stream().map(UserVo::new).toList());
+        return ResponseEntity.success(voPage);
     }
 
     // endregion

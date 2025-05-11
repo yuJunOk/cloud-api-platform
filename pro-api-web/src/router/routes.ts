@@ -1,9 +1,10 @@
 import { RouteRecordRaw } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
-import LoginView from "@/views/login/index.vue";
+import LoginView from "@/views/LoginView/index.vue";
 import NoAuthView from "@/views/NoAuthView.vue";
 import ACCESS_ENUM from "@/access/accessEnum";
 import ManageUserView from "@/views/ManageUserView/index.vue";
+import ManageApiView from "@/views/ManageApiView/index.vue";
 
 export const proRoutes: Array<RouteRecordRaw> = [
   {
@@ -24,12 +25,21 @@ export const proRoutes: Array<RouteRecordRaw> = [
       access: ACCESS_ENUM.ADMIN,
     },
   },
+  {
+    path: "/manage/api",
+    name: "管理API",
+    component: ManageApiView,
+    meta: {
+      title: "管理API - 母鸡API",
+      access: ACCESS_ENUM.ADMIN,
+    },
+  },
 ];
 
 export const routes: Array<RouteRecordRaw> = [
   ...proRoutes,
   {
-    path: "/login",
+    path: "/LoginView",
     name: "登录",
     component: LoginView,
     meta: {

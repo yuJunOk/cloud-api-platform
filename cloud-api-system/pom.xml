@@ -22,6 +22,7 @@
         <module>api-client</module>
         <module>api-service-mock</module>
         <module>api-service-user</module>
+        <module>api-service-api</module>
     </modules>
     <dependencies>
         <dependency>
@@ -101,6 +102,16 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!--   redis     -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--   redis 整合 session    -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
         </dependency>
         <!--  测试  -->
         <dependency>

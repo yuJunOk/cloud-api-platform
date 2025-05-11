@@ -5,16 +5,15 @@
       <a-col :flex="1">
         <a-form
           :model="searchParams"
-          :label-col-props="{ span: 6 }"
-          :wrapper-col-props="{ span: 18 }"
-          label-align="left"
+          :label-col-props="{ flex: 'none' }"
+          :wrapper-col-props="{ flex: 1 }"
         >
           <a-row :gutter="16">
             <a-col :span="5">
-              <a-form-item field="userName" label="用户名">
+              <a-form-item field="userName" label="昵称">
                 <a-input
                   v-model="searchParams.userName"
-                  placeholder="输入用户名"
+                  placeholder="输入昵称"
                 />
               </a-form-item>
             </a-col>

@@ -3,21 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev",
+    "serve": "vue-cli-service serve --mode dev --port 8888",
     "build": "vue-cli-service build --mode prod",
     "lint": "vue-cli-service lint",
-    "sync-user-api": "openapi --input http://localhost:8082/api/user/v3/api-docs --output ./api/user --client axios"
+    "sync-user-api": "openapi --input http://localhost:8082/api/user/v3/api-docs --output ./api/user --client axios",
+    "sync-api-api": "openapi --input http://localhost:8083/api/api/v3/api-docs --output ./api/api --client axios"
   },
   "dependencies": {
     "@vueuse/core": "^13.1.0",
     "axios": "^1.9.0",
     "core-js": "^3.8.3",
+    "monaco-editor": "^0.52.2",
+    "monaco-editor-webpack-plugin": "^7.1.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@arco-design/web-vue": "^2.57.0",
+    "@babel/plugin-transform-class-static-block": "^7.27.1",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",

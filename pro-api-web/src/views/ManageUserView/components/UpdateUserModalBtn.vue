@@ -8,7 +8,7 @@
   >
     <a-form :model="updateFormVals">
       <a-form-item field="id" label="ID">
-        <a-input v-model="updateFormVals.id" disabled />
+        <a-input v-model="updateFormVals.id" readonly />
       </a-form-item>
       <a-form-item
         field="userName"

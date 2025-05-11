@@ -119,13 +119,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDo>
         String validEmail = null;
         String validLoginName = null;
         if (!updateUserDto.getLoginName().equals(userDo.getLoginName())) {
-            validLoginName = userDo.getLoginName();
+            validLoginName = updateUserDto.getLoginName();
         }
         if (!updateUserDto.getPhone().equals(userDo.getPhone())) {
-            validPhone = userDo.getPhone();
+            validPhone = updateUserDto.getPhone();
         }
         if (!updateUserDto.getEmail().equals(userDo.getEmail())) {
-            validEmail = userDo.getEmail();
+            validEmail = updateUserDto.getEmail();
         }
         validOnlyParams(validPhone, validEmail, validLoginName);
         // 验证通过，开始更新用户

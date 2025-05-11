@@ -9,8 +9,13 @@ axios.interceptors.request.use(
     config.withCredentials = true;
     config.baseURL = process.env["VUE_APP_BASE_URL"];
     // 去掉open api生成的固定域名
-    const url = new URL(config.url ?? "/");
-    config.url = url.pathname;
+    // 处理 URL 路径和参数
+    if (config.url) {
+      // 兼容绝对路径和相对路径（以当前域名为基准）
+      const url = new URL(config.url, window.location.origin);
+      // 保留路径、查询参数、哈希
+      config.url = url.pathname + url.search + url.hash;
+    }
     //
     return config;
   },

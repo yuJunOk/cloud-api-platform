@@ -20,6 +20,10 @@ spring:
           uri: lb://api-service-user
           predicates:
             - Path=/api/user/**
+        - id: api-service-api
+          uri: lb://api-service-api
+          predicates:
+            - Path=/api/api/**
 knife4j:
   gateway:
     # ① 第一个配置，开启gateway聚合组件

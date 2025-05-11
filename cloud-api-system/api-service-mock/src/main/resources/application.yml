@@ -2,6 +2,11 @@ server:
   port: 8081
   servlet:
     context-path: /api/mock
+    session:
+      cookie:
+        # 30天过期
+        max-age: 2592000
+        path: /api
 
 spring:
   # 指定环境，决定选择配置文件
@@ -9,14 +14,21 @@ spring:
     active: dev
   application:
     name: api-service-mock
-  # session 失效时间
   session:
-    timeout: 86400
+    # 30 天过期
+    timeout: 2592000
+    store-type: redis
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: 填写数据库账号
     password: 填写数据库密码
     url: jdbc:mysql://localhost:3306/db_multi?characterEncoding=UTF8&useUnicode=true&useSSL=false
+  data:
+    redis:
+      port: 6379
+      host: localhost #redis服务器IP
+      password: 填入你的redis密码 #默认为空
+      database: 1 # 设置存入redis的哪一个库（默认为0）
   mail:
     protocol: smtp #邮件协议
     host: 填写邮箱smtp服务器地址 #网易邮箱smtp服务器地址

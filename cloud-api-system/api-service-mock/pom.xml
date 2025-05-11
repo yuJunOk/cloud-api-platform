@@ -7,24 +7,12 @@
         <artifactId>cloud-api-system</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>com.api.mock</groupId>
+
     <artifactId>api-service-mock</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>api-service-mock</name>
     <description>api-service-mock</description>
-    <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
-    <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
-    </scm>
+
     <properties>
         <java.version>17</java.version>
     </properties>
