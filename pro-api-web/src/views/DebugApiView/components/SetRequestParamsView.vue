@@ -1,78 +1,77 @@
 <template>
   <!-- 请求结构开始 -->
-  <a-card style="margin-bottom: 10px">
-    <a-row style="margin-bottom: 10px">
-      <a-col :span="12">
-        <a-typography-text> 参数结构 </a-typography-text>
-      </a-col>
-      <a-col :span="12" style="display: flex; justify-content: end; gap: 10px">
-        <a-button size="mini" @click="addRow()">添加行</a-button>
-        <a-popconfirm
-          content="重置会清除原有内容"
-          type="warning"
-          position="tr"
-          @ok="resetTable()"
-        >
-          <a-button size="mini" status="warning">重置</a-button>
-        </a-popconfirm>
-      </a-col>
-    </a-row>
-    <a-table
-      :columns="columns"
-      :data="tableData"
-      :pagination="false"
-      show-empty-tree
+  <a-row style="margin-bottom: 10px">
+    <a-col
+      :span="12"
+      :offset="12"
+      style="display: flex; justify-content: end; gap: 10px"
     >
-      <template #name="{ record }">
-        <a-input v-model="record.name" />
-      </template>
-      <template #type="{ record }">
-        <a-select
-          v-model="record.type"
-          placeholder="选择类型"
-          :options="jsonDataTypeOptionData"
-        />
-      </template>
-      <template #value="{ record }">
-        <a-input-number v-if="record.type == 'number'" v-model="record.value" />
-        <a-input v-else-if="record.type != 'object'" v-model="record.value" />
-      </template>
-      <template #must="{ record }">
-        <a-checkbox v-model="record.must"></a-checkbox>
-      </template>
-      <template #description="{ record }">
-        <a-input v-model="record.description" />
-      </template>
-      <template #optional="{ record }">
-        <a-button
-          type="text"
-          @click="addRow(record)"
-          v-if="record.type == 'object'"
-        >
+      <a-button @click="addRow()" size="min">添加行</a-button>
+      <a-popconfirm
+        content="重置会清除原有内容"
+        type="warning"
+        position="tr"
+        @ok="resetTable()"
+      >
+        <a-button status="warning" size="min">重置</a-button>
+      </a-popconfirm>
+    </a-col>
+  </a-row>
+  <a-table
+    :columns="columns"
+    :data="tableData"
+    :pagination="false"
+    show-empty-tree
+  >
+    <template #name="{ record }">
+      <a-input v-model="record.name" />
+    </template>
+    <template #type="{ record }">
+      <a-select
+        v-model="record.type"
+        placeholder="选择类型"
+        :options="jsonDataTypeOptionData"
+      />
+    </template>
+    <template #value="{ record }">
+      <a-input-number v-if="record.type == 'number'" v-model="record.value" />
+      <a-input v-else-if="record.type != 'object'" v-model="record.value" />
+    </template>
+    <template #must="{ record }">
+      <a-checkbox v-model="record.must" disabled></a-checkbox>
+    </template>
+    <template #description="{ record }">
+      <a-input v-model="record.description" readonly />
+    </template>
+    <template #optional="{ record }">
+      <a-button
+        type="text"
+        @click="addRow(record)"
+        v-if="record.type == 'object'"
+      >
+        <template #icon>
+          <icon-plus-circle size="18" />
+        </template>
+      </a-button>
+      <a-popconfirm
+        content="确认删除?"
+        type="warning"
+        position="tr"
+        @ok="deleteSelf(record)"
+      >
+        <a-button type="text" status="danger">
           <template #icon>
-            <icon-plus-circle size="18" />
+            <icon-minus-circle size="18" />
           </template>
         </a-button>
-        <a-popconfirm
-          content="确认删除?"
-          type="warning"
-          position="tr"
-          @ok="deleteSelf(record)"
-        >
-          <a-button type="text" status="danger">
-            <template #icon>
-              <icon-minus-circle size="18" />
-            </template>
-          </a-button>
-        </a-popconfirm>
-      </template>
-    </a-table>
-  </a-card>
+      </a-popconfirm>
+    </template>
+  </a-table>
   <!-- 请求结构结束 -->
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, watch, watchEffect } from "vue";
+import { computed, reactive, watchEffect } from "vue";
 import { jsonDataTypeOptionData } from "@/models/options/select/ApiOptionData";
 import { IconPlusCircle, IconMinusCircle } from "@arco-design/web-vue/es/icon";
 import { JsonApiDataRule } from "@/models/type/ApiType";
@@ -96,7 +95,7 @@ const columns = [
     slotName: "type",
   },
   {
-    title: "示例",
+    title: "值",
     slotName: "value",
   },
   {
@@ -117,6 +116,23 @@ const columns = [
  * 表格数据
  */
 const tableData = reactive<JsonApiDataRule[]>([]);
+
+// 表格数据请求map（要暴露给父组件）
+const tableMapData = computed(() => {
+  const convert = (arr) =>
+    arr.reduce((acc, item) => {
+      // 递归条件：当 type 为 object 且存在 children 数组时
+      if (item.type === "object" && Array.isArray(item.value?.children)) {
+        // 🔑 递归处理子级
+        acc[item.name] = convert(item.value.children);
+      } else {
+        acc[item.name] = item.value;
+      }
+      return acc;
+    }, {});
+  // 初始调用
+  return convert(tableData);
+});
 
 // 表格数据json字符串版（要暴露给父组件）
 const tableJsonStr = computed(() => {
@@ -209,13 +225,13 @@ const resetTable = (resetTableData) => {
   }
 };
 
-watch(
-  () => props.requestParams,
-  (newValue) => {
-    resetTable(newValue);
-  },
-  { immediate: true }
-);
+/**
+ * 根据props重设数据
+ * @param props
+ */
+const resetDataByProps = (props = {}) => {
+  resetTable(props.requestParams);
+};
 
 /**
  * 观察
@@ -230,6 +246,8 @@ watchEffect(() => {
  */
 // eslint-disable-next-line no-undef
 defineExpose({
+  tableMapData,
   tableJsonStr,
+  resetDataByProps,
 });
 </script>

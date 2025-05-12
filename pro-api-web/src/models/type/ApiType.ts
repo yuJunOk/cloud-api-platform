@@ -1,18 +1,8 @@
-export type RequestRule = {
+export type JsonApiDataRule = {
   key: string;
   name?: string;
   type?: string;
-  example?: string;
-  must?: boolean;
+  value?: string;
   description?: string;
-  children?: RequestRule[];
-};
-
-export type ResponseRule = {
-  key: string;
-  name?: string;
-  type?: string;
-  example?: string;
-  description?: string;
-  children?: ResponseRule[];
+  children?: JsonApiDataRule[];
 };

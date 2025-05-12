@@ -3,42 +3,26 @@
   <a-card style="margin-bottom: 10px">
     <a-row style="margin-bottom: 10px">
       <a-col :span="12">
-        <a-typography-text> 响应头结构 </a-typography-text>
+        <a-typography-text> 请求头结构 </a-typography-text>
       </a-col>
       <a-col :span="12" style="display: flex; justify-content: end; gap: 10px">
-        <a-button @click="addRow()">添加行</a-button>
+        <a-button size="mini" @click="addRow()">添加行</a-button>
         <a-popconfirm
           content="重置会覆盖原有内容"
           type="warning"
           position="tr"
           @ok="resetTable()"
         >
-          <a-button status="warning">重置</a-button>
+          <a-button size="mini" status="warning">重置</a-button>
         </a-popconfirm>
       </a-col>
     </a-row>
-    <a-table
-      :columns="columns"
-      :data="tableData"
-      :pagination="false"
-      show-empty-tree
-    >
+    <a-table :columns="columns" :data="tableData" :pagination="false">
       <template #name="{ record }">
         <a-input v-model="record.name" />
       </template>
-      <template #type="{ record }">
-        <a-select
-          v-model="record.type"
-          placeholder="选择类型"
-          :options="basicDataTypeOptionData"
-        />
-      </template>
-      <template #example="{ record }">
-        <a-input-number
-          v-if="record.type == 'number'"
-          v-model="record.example"
-        />
-        <a-input v-else-if="record.type != 'object'" v-model="record.example" />
+      <template #value="{ record }">
+        <a-input v-model="record.value" />
       </template>
       <template #must="{ record }">
         <a-checkbox v-model="record.must"></a-checkbox>
@@ -47,15 +31,6 @@
         <a-input v-model="record.description" />
       </template>
       <template #optional="{ record }">
-        <a-button
-          type="text"
-          @click="addRow(record)"
-          v-if="record.type == 'object'"
-        >
-          <template #icon>
-            <icon-plus-circle size="18" />
-          </template>
-        </a-button>
         <a-popconfirm
           content="确认删除?"
           type="warning"
@@ -76,14 +51,13 @@
 
 <script setup lang="ts">
 import { computed, reactive, watch, watchEffect } from "vue";
-import { basicDataTypeOptionData } from "@/models/options/ApiOptionData";
-import { IconPlusCircle, IconMinusCircle } from "@arco-design/web-vue/es/icon";
-import { ResponseRule } from "@/models/type/ApiType";
+import { IconMinusCircle } from "@arco-design/web-vue/es/icon";
+import { JsonApiDataRule } from "@/models/type/ApiType";
 
 // 父组件传参
-// eslint-disable-next-line no-undef
+// eslint-disable-next-line no-undef,@typescript-eslint/no-unused-vars
 const props = defineProps<{
-  responseHeader?: string;
+  headerData?: string;
 }>();
 
 /**
@@ -95,12 +69,8 @@ const columns = [
     slotName: "name",
   },
   {
-    title: "类型",
-    slotName: "type",
-  },
-  {
     title: "示例",
-    slotName: "example",
+    slotName: "value",
   },
   {
     title: "是否必须",
@@ -122,20 +92,22 @@ const columns = [
 const basicTableData = [
   {
     name: "Content-Type",
-    type: "string",
-    example: "application/json",
+    value: "application/json",
     must: true,
     description: "内容类型",
   },
 ];
+
 /**
  * 表格数据
  */
-const tableData = reactive<ResponseRule[]>([
+const tableData = reactive<JsonApiDataRule[]>([
   ...JSON.parse(JSON.stringify(basicTableData)),
 ]);
 
-// 表格数据json字符串版（要暴露给父组件）
+/**
+ * 表格数据json字符串版（要暴露给父组件）
+ */
 const tableJsonStr = computed(() => {
   return JSON.stringify(tableData);
 });
@@ -143,30 +115,16 @@ const tableJsonStr = computed(() => {
 /**
  * 维护表数据
  */
-const maintainTableData = (treeData: ResponseRule[], parent?: ResponseRule) => {
+const maintainTableData = (
+  treeData: JsonApiDataRule[],
+  parent?: JsonApiDataRule
+) => {
   treeData.forEach((node, index) => {
     // 生成当前节点 key
     node.key = parent ? `${parent.key}-${index + 1}` : `${index + 1}`;
     // 默认属性名
     if (!node.name) {
       node.name = `prop${node.key}`;
-    }
-    // 默认类型
-    if (!node.type) {
-      node.type = "string";
-    }
-    // 类型不为object时，children不存在
-    if (node.type !== "object") {
-      node.children = undefined;
-    } else {
-      node.example = undefined;
-      if (!node.children) {
-        node.children = [];
-      }
-    }
-    // 递归处理子节点
-    if (node.children) {
-      maintainTableData(node.children, node);
     }
   });
 };
@@ -175,13 +133,13 @@ const maintainTableData = (treeData: ResponseRule[], parent?: ResponseRule) => {
  * 添加行数据
  * @param record
  */
-const addRow = (record?: ResponseRule) => {
+const addRow = (record?: JsonApiDataRule) => {
   if (record != null) {
     record.children
-      ? record.children.push({} as ResponseRule)
-      : (record.children = [{} as ResponseRule]);
+      ? record.children.push({} as JsonApiDataRule)
+      : (record.children = [{} as JsonApiDataRule]);
   } else {
-    tableData.push({} as ResponseRule);
+    tableData.push({} as JsonApiDataRule);
   }
 };
 
@@ -189,7 +147,7 @@ const addRow = (record?: ResponseRule) => {
  * 删除该行
  * @param record
  */
-const deleteSelf = (record: ResponseRule) => {
+const deleteSelf = (record: JsonApiDataRule) => {
   const tmpData = tableData.filter((node) => {
     // 跳过目标节点及其子节点
     return !(node.key === record.key || node.key.startsWith(`${record.key}-`));
@@ -207,13 +165,13 @@ const resetTable = (resetTableData) => {
   tableData.push(...(resetData ?? basicData));
 };
 
-/**
- * 根据props重设数据
- * @param props
- */
-const resetDataByProps = (props = {}) => {
-  resetTable(props.responseHeader);
-};
+watch(
+  () => props.headerData,
+  (newValue) => {
+    resetTable(newValue);
+  },
+  { immediate: true }
+);
 
 /**
  * 观察
@@ -229,6 +187,5 @@ watchEffect(() => {
 // eslint-disable-next-line no-undef
 defineExpose({
   tableJsonStr,
-  resetDataByProps,
 });
 </script>

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { SelectOptionData } from "@arco-design/web-vue";
-import { ResponseRule } from "@/models/type/ApiType";
+import { JsonApiDataRule } from "@/models/type/ApiType";
 
 export const findOptionsLabelByValue = (
   option: SelectOptionData,
@@ -13,11 +13,11 @@ export const findOptionsLabelByValue = (
  *
  * @param rules
  */
-export const generateJsonByApiDataRules = (rules: ResponseRule[]) => {
+export const generateJsonByApiDataRules = (rules: JsonApiDataRule[]) => {
   const result = new Map();
 
   // 递归处理嵌套结构
-  const processField = (rule: ResponseRule) => {
+  const processField = (rule: JsonApiDataRule) => {
     let defaultValue;
 
     // 根据类型生成默认值
@@ -40,9 +40,9 @@ export const generateJsonByApiDataRules = (rules: ResponseRule[]) => {
     }
 
     // 应用示例值
-    if (rule.example !== undefined) {
+    if (rule.value !== undefined) {
       defaultValue = rule.type === 'number' ?
-        Number(rule.example) : String(rule.example);
+        Number(rule.value) : String(rule.value);
     }
 
     return defaultValue;

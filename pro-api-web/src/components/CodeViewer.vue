@@ -8,33 +8,23 @@
 
 <script setup lang="ts">
 import * as monaco from "monaco-editor";
-import {
-  onMounted,
-  ref,
-  toRaw,
-  withDefaults,
-  defineProps,
-  watch,
-  computed,
-} from "vue";
-
-/**
- * 定义组件属性类型
- */
-interface Props {
-  value: string;
-  language?: string;
-  height?: number;
-}
+import { onMounted, ref, toRaw, withDefaults, defineProps, watch } from "vue";
 
 /**
  * 给组件指定初始值
  */
-const props = withDefaults(defineProps<Props>(), {
-  value: () => "",
-  language: () => "plaintext",
-  height: () => 400,
-});
+const props = withDefaults(
+  defineProps<{
+    value: string;
+    language?: string;
+    height?: number;
+  }>(),
+  {
+    value: () => "",
+    language: () => "plaintext",
+    height: () => 400,
+  }
+);
 
 const codeEditorRef = ref();
 const codeEditor = ref();
@@ -91,7 +81,7 @@ onMounted(() => {
     minimap: {
       enabled: false,
     },
-    readOnly: false,
+    readOnly: true,
     theme: "vs",
     // lineNumbers: "off",
     // roundedSelection: false,
@@ -102,13 +92,6 @@ onMounted(() => {
   if (props.value) {
     toRaw(codeEditor.value).getAction("editor.action.formatDocument")?.run();
   }
-});
-
-// eslint-disable-next-line no-undef
-defineExpose({
-  editorValue: computed(() =>
-    codeEditor.value ? toRaw(codeEditor.value).getValue() : ""
-  ),
 });
 </script>
 

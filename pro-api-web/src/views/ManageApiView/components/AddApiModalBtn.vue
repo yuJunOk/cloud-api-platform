@@ -7,7 +7,9 @@
     title="新建数据"
     @cancel="handleCancel"
     @before-ok="handleBeforeOk"
-    fullscreen
+    width="80%"
+    :mask-closable="false"
+    unmount-on-close
   >
     <EditApiView :api-data="addFormVals" ref="editApiView" />
   </a-modal>

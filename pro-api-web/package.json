@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode dev --port 8888",
-    "build": "vue-cli-service build --mode prod",
+    "build": "vue-cli-service build --mode prod --port 8888",
     "lint": "vue-cli-service lint",
     "sync-user-api": "openapi --input http://localhost:8082/api/user/v3/api-docs --output ./api/user --client axios",
     "sync-api-api": "openapi --input http://localhost:8083/api/api/v3/api-docs --output ./api/api --client axios"

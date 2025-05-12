@@ -116,6 +116,13 @@
     >
       <template #optional="{ record }">
         <UpdateApiModalBtn :api-info-id="record.id" @refresh="loadData" />
+        <DebugApiModalBtn
+          :method="record.method"
+          :url="record.url"
+          :request-params="record.requestParams"
+          :request-header="record.requestHeader"
+          :response-header="record.responseHeader"
+        />
         <a-popconfirm
           content="确认删除?"
           type="warning"
@@ -153,13 +160,14 @@ import AddApiModalBtn from "@/views/ManageApiView/components/AddApiModalBtn.vue"
 import {
   apiStatusOptionData,
   requestMethodTypeOptionData,
-} from "@/models/options/ApiOptionData";
+} from "@/models/options/select/ApiOptionData";
 import {
   ApiInfoControllerService,
   ApiInfoVo,
   QueryApiInfoPageDto,
 } from "../../../api/api";
 import UpdateApiModalBtn from "@/views/ManageApiView/components/UpdateApiModalBtn.vue";
+import DebugApiModalBtn from "@/views/ManageApiView/components/DebugApiModalBtn.vue";
 
 // 批量选择keys
 const selectedKeys = ref([]);

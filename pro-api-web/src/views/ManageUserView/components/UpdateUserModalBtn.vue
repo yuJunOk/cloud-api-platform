@@ -58,7 +58,7 @@ import { UserControllerService, UserVo } from "../../../../api/user";
 import {
   genderOptionData,
   userRoleOptionData,
-} from "@/models/options/UserOptionData";
+} from "@/models/options/select/UserOptionData";
 import ResponseCode from "@/models/enum/ResponseCode";
 import message from "@arco-design/web-vue/es/message";
 

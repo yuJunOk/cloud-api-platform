@@ -21,7 +21,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static update(
-      requestBody: UpdateApiInfoDto,
+        requestBody: UpdateApiInfoDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -36,7 +36,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static getByPage(
-      requestBody: QueryApiInfoPageDto,
+        requestBody: QueryApiInfoPageDto,
     ): CancelablePromise<ResponseEntityPageApiInfoVo> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -51,7 +51,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static delete(
-      requestBody: IdDto,
+        requestBody: IdDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -66,7 +66,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static deleteBatch(
-      requestBody: IdBatchDto,
+        requestBody: IdBatchDto,
     ): CancelablePromise<ResponseEntityBoolean> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -81,7 +81,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static add(
-      requestBody: AddApiInfoDto,
+        requestBody: AddApiInfoDto,
     ): CancelablePromise<ResponseEntityLong> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -96,7 +96,7 @@ export class ApiInfoControllerService {
      * @throws ApiError
      */
     public static getById(
-      id: number,
+        id: number,
     ): CancelablePromise<ResponseEntityApiInfoDo> {
         return __request(OpenAPI, {
             method: 'GET',

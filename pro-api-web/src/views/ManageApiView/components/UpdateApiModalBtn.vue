@@ -5,7 +5,9 @@
     title="修改数据"
     @cancel="handleCancel"
     @before-ok="handleBeforeOk"
-    fullscreen
+    width="80%"
+    :mask-closable="false"
+    unmount-on-close
   >
     <EditApiView :api-data="updateFormVals" ref="editApiView" />
   </a-modal>
@@ -69,6 +71,7 @@ const handleBeforeOk = async (done) => {
   let validRes = await editApiView.value.validBasicInfo();
   if (!validRes) {
     done(false);
+    return;
   }
   const updateData = editApiView.value.returnApiData;
   const res = await ApiInfoControllerService.update(updateData);

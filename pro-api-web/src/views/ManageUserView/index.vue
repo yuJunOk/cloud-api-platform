@@ -175,7 +175,7 @@ import ResponseCode from "@/models/enum/ResponseCode";
 import {
   genderOptionData,
   userRoleOptionData,
-} from "@/models/options/UserOptionData";
+} from "@/models/options/select/UserOptionData";
 import { findOptionsLabelByValue } from "@/utils/CommonUtils";
 import UpdateUserModalBtn from "@/views/ManageUserView/components/UpdateUserModalBtn.vue";
 import AddUserModalBtn from "@/views/ManageUserView/components/AddUserModalBtn.vue";
