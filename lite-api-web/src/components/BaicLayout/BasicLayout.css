@@ -1,0 +1,16 @@
+.layout {
+    height: 100vh;
+}
+
+.header {
+    background: white;
+}
+
+.content {
+    overflow-y: auto;
+}
+
+.footer {
+    text-align: center;
+    background: white;
+}
