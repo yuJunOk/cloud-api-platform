@@ -195,7 +195,6 @@ const deleteSelf = (record: JsonApiDataRule) => {
   const tmpData = filterData(tableData);
   // 原来的数据替换成新数据
   tableData.splice(0, tableData.length, ...tmpData);
-  console.log(tableData);
 };
 
 /**

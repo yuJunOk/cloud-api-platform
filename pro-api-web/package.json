@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode dev --port 8888",
+    "serve": "vue-cli-service serve --mode dev --host 127.0.0.1 --port 8888",
     "build": "vue-cli-service build --mode prod --port 8888",
     "lint": "vue-cli-service lint",
     "sync-user-api": "openapi --input http://localhost:8082/api/user/v3/api-docs --output ./api/user --client axios",

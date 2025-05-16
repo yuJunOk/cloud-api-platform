@@ -119,12 +119,15 @@ const tableData = reactive<JsonApiDataRule[]>([]);
 
 // 表格数据请求map（要暴露给父组件）
 const tableMapData = computed(() => {
-  const convert = (arr) =>
-    arr.reduce((acc, item) => {
+  const convert = (arr: JsonApiDataRule[]) =>
+    arr.reduce((acc: Record<string, any>, item) => {
+      if (!item.name) {
+        return acc;
+      }
       // 递归条件：当 type 为 object 且存在 children 数组时
-      if (item.type === "object" && Array.isArray(item.value?.children)) {
+      if (item.type === "object" && Array.isArray(item.children)) {
         // 🔑 递归处理子级
-        acc[item.name] = convert(item.value.children);
+        acc[item.name] = convert(item.children);
       } else {
         acc[item.name] = item.value;
       }
@@ -193,8 +196,8 @@ const addRow = (record?: JsonApiDataRule) => {
  */
 const deleteSelf = (record: JsonApiDataRule) => {
   // 递归删除
-  const filterData = (data) => {
-    let newData = [];
+  const filterData = (data: JsonApiDataRule[]) => {
+    let newData = [] as JsonApiDataRule[];
     data &&
       data.forEach((item) => {
         if (item.key != record.key) {
@@ -217,20 +220,12 @@ const deleteSelf = (record: JsonApiDataRule) => {
 /**
  * 重置表格
  */
-const resetTable = (resetTableData) => {
+const resetTable = (resetTableData: string) => {
   tableData.length = 0;
   if (resetTableData) {
     const resetData = JSON.parse(resetTableData);
     tableData.push(...resetData);
   }
-};
-
-/**
- * 根据props重设数据
- * @param props
- */
-const resetDataByProps = (props = {}) => {
-  resetTable(props.requestParams);
 };
 
 /**
@@ -248,6 +243,5 @@ watchEffect(() => {
 defineExpose({
   tableMapData,
   tableJsonStr,
-  resetDataByProps,
 });
 </script>

@@ -39,7 +39,7 @@ export const proRoutes: Array<RouteRecordRaw> = [
 export const routes: Array<RouteRecordRaw> = [
   ...proRoutes,
   {
-    path: "/LoginView",
+    path: "/login",
     name: "登录",
     component: LoginView,
     meta: {

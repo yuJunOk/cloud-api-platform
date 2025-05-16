@@ -3,6 +3,7 @@ export type JsonApiDataRule = {
   name?: string;
   type?: string;
   value?: string;
+  must?: boolean;
   description?: string;
   children?: JsonApiDataRule[];
 };

@@ -38,7 +38,7 @@ const columns = [
 /**
  * 表格数据
  */
-const tableData = ref([]);
+const tableData = ref<{ name: string; value: string }[]>([]);
 
 /**
  * 监听
@@ -46,7 +46,6 @@ const tableData = ref([]);
 watch(
   () => props.responseHeader,
   (newValue) => {
-    console.log(newValue);
     if (!newValue) {
       return;
     }

@@ -62,7 +62,7 @@ const props = defineProps<{
 watch(
   () => props.headerData,
   (newVal) => {
-    resetTable(newVal);
+    resetTable(newVal ?? "");
   }
 );
 
@@ -118,8 +118,10 @@ const tableJsonStr = computed(() => {
 
 // 表格数据请求map（要暴露给父组件）
 const tableMapData = computed(() => {
-  return tableData.reduce((acc, item) => {
-    acc[item.name] = item.value;
+  return tableData.reduce((acc: Record<string, any>, item) => {
+    if (item.name) {
+      acc[item.name] = item.value;
+    }
     return acc;
   }, {});
 });
@@ -170,7 +172,7 @@ const deleteSelf = (record: JsonApiDataRule) => {
 /**
  * 重置表格
  */
-const resetTable = (resetTableData) => {
+const resetTable = (resetTableData: string) => {
   tableData.length = 0;
   const basicData = JSON.parse(JSON.stringify(basicTableData));
   const resetData = resetTableData ? JSON.parse(resetTableData) : null;
