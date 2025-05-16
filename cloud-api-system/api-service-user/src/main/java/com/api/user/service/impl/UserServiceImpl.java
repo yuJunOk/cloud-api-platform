@@ -135,6 +135,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserDo>
     }
 
     @Override
+    public LoginUserBo loginByAccount(String loginName, String loginPwd, HttpServletRequest request) {
+        // 1. 校验
+        if (CommonUtils.isAnyBlank(loginName, loginPwd)){
+            throw new BusinessException(ResponseCode.PARAMS_ERROR);
+        }
+        // 2. 加密
+        String md5Pwd = DigestUtils.md5DigestAsHex((PASSWORD_SALT + loginPwd).getBytes());
+        // 查询用户信息
+        LambdaQueryWrapper<UserDo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(UserDo::getLoginName, loginName);
+        queryWrapper.eq(UserDo::getLoginPwd, md5Pwd);
+        UserDo userDo = this.getOne(queryWrapper);
+        if (userDo == null){
+            throw new BusinessException(ResponseCode.PARAMS_ERROR, "登录失败，账户或密码错误");
+        }
+        // 用户脱敏
+        LoginUserBo loginUserBo = LoginUserBo.doToBo(userDo);
+        // LOGIN_NAME_MIN_LEN. 记录用户的登录态
+        request.getSession().setAttribute(USER_LOGIN_STATE, loginUserBo);
+        return loginUserBo;
+    }
+
+    @Override
     public LoginUserBo loginByEmail(String email, String loginPwd, HttpServletRequest request) {
         // 1. 校验
         if (CommonUtils.isAnyBlank(email, loginPwd)){

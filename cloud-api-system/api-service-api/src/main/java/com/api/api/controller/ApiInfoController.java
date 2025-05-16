@@ -6,6 +6,7 @@ import com.api.common.common.ResponseCode;
 import com.api.common.common.ResponseEntity;
 import com.api.common.constant.CommonConstant;
 import com.api.common.exception.BusinessException;
+import com.api.common.utils.CommonUtils;
 import com.api.model.domain.ApiInfoDo;
 import com.api.model.domain.UserDo;
 import com.api.model.dto.IdBatchDto;
@@ -20,9 +21,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.api.common.constant.UserConstant.USER_LOGIN_STATE;
 
@@ -176,5 +181,24 @@ public class ApiInfoController {
         return ResponseEntity.success(voPage);
     }
 
+    /**
+     * 搜索
+     * @param searchText
+     * @return
+     */
+    @GetMapping("search")
+    public ResponseEntity<List<ApiInfoVo>> search(@RequestParam("searchText") String searchText){
+        LambdaQueryWrapper<ApiInfoDo> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasText(searchText), ApiInfoDo::getName, searchText)
+                .like(StringUtils.hasText(searchText), ApiInfoDo::getDescription, searchText);
+        List<ApiInfoDo> apiInfoDoList = apiInfoService.list(queryWrapper);
+        List<ApiInfoVo> voList = new ArrayList<>();
+        for (ApiInfoDo apiInfoDo : apiInfoDoList) {
+            ApiInfoVo vo = new ApiInfoVo();
+            BeanUtils.copyProperties(apiInfoDo, vo);
+            voList.add(vo);
+        }
+        return ResponseEntity.success(voList);
+    }
     // endregion
 }

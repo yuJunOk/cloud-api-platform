@@ -167,6 +167,20 @@ public class UserController {
 
     // endregion
 
+    @PostMapping("login/account")
+    public ResponseEntity<LoginUserBo> loginByAccount(@RequestBody LoginByAccountDto loginByAccountDto, HttpServletRequest request) {
+        if (loginByAccountDto == null || CommonUtils.isAnyBlank(loginByAccountDto.getLoginName(), loginByAccountDto.getLoginPwd())) {
+            return new ResponseEntity<>(ResponseCode.PARAMS_ERROR);
+        }
+        // 登录
+        LoginUserBo loginUserBo = userService.loginByAccount(loginByAccountDto.getLoginName(), loginByAccountDto.getLoginPwd(), request);
+        // 返回登录结果
+        if (loginUserBo == null) {
+            return new ResponseEntity<>(ResponseCode.OPERATION_ERROR);
+        }
+        return ResponseEntity.success(loginUserBo);
+    }
+
     /**
      * 根据email登录
      * @param loginByEmailDto
@@ -185,6 +199,17 @@ public class UserController {
             return new ResponseEntity<>(ResponseCode.OPERATION_ERROR);
         }
         return ResponseEntity.success(loginUserBo);
+    }
+
+    /**
+     * 退出登录
+     * @param request
+     * @return
+     */
+    @PostMapping("logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(USER_LOGIN_STATE);
+        return ResponseEntity.success();
     }
 
     /**

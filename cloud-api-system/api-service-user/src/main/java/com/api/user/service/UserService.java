@@ -30,6 +30,15 @@ public interface UserService extends IService<UserDo> {
     boolean updateUserById(UpdateUserDto updateUserDto);
 
     /**
+     * 根据账号登录
+     * @param loginName
+     * @param loginPwd
+     * @param request
+     * @return
+     */
+    LoginUserBo loginByAccount(String loginName, String loginPwd, HttpServletRequest request);
+
+    /**
      * 根据邮箱登录
      * @param email
      * @param loginPwd
