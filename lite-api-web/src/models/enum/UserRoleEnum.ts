@@ -1,7 +1,7 @@
 /**
  * 权限定义
  */
-const ACCESS_ENUM = {
+const UserRoleEnum = {
   VISITOR: "visitor",
   BAN: "ban",
   USER: "user",
@@ -9,4 +9,4 @@ const ACCESS_ENUM = {
   SUPER: "super",
 };
 
-export default ACCESS_ENUM;
+export default UserRoleEnum;

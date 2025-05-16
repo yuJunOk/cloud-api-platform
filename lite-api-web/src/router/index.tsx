@@ -4,14 +4,13 @@ import {StatisticsPage} from "@/pages/Statistics/StatisticsPage.tsx";
 import {ApiListPage} from "@/pages/ApiList/ApiListPage.tsx";
 import {BasicLayout} from "@/components/BaicLayout/BasicLayout.tsx";
 import {MonoLayout} from "@/components/MonoLayout.tsx";
-import {RequireRole} from "@/access/checkAccess.tsx";
-import AccessEnum from "@/access/accessEnum.ts";
 import {ApiInfoPage} from "@/pages/ApiInfo/ApiInfoPage.tsx";
 
 export const routes = [
     {
         path: '/',
-        element: <RequireRole allowedRoles={AccessEnum.ADMIN}><BasicLayout /></RequireRole>,
+        // element: <RequireRole allowedRoles={AccessEnum.ADMIN}><BasicLayout /></RequireRole>,
+        element: <BasicLayout />,
         children: [
             {
                 path: '/',

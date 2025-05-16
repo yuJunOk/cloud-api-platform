@@ -1,7 +1,7 @@
 import {proxy} from "valtio/vanilla";
 import {type LoginUserBo, UserControllerService} from "../../api/user";
 import ResponseCode from "@/models/enum/ResponseCode.ts";
-import AccessEnum from "@/access/accessEnum.ts";
+import AccessEnum from "@/models/enum/UserRoleEnum.ts";
 
 const baseVisitorUser = {
     userName: "未登录",

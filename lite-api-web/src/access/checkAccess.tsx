@@ -2,7 +2,7 @@
 import {Navigate, useLocation, useNavigate} from 'react-router-dom';
 import {useSnapshot} from "valtio/react";
 import store, {getUser} from "@/store/user.ts";
-import AccessEnum from "@/access/accessEnum.ts";
+import AccessEnum from "@/models/enum/UserRoleEnum.ts";
 import {useEffect} from "react";
 
 // 高阶守卫组件 TODO: 需要优化闪烁问题，每次刷新页面丢失状态值的时候，会短暂地跳到login页面，再切回来

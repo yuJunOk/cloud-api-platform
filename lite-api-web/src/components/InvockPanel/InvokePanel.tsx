@@ -6,6 +6,7 @@ import {jsonDataTypeOptionData} from "@/models/options/ApiOptionData.ts";
 import {InvokeControllerService} from "../../../api/api";
 import ResponseCode from "@/models/enum/ResponseCode.ts";
 import {getEditorFormat} from "@/utils/CodeEditorUtils.ts";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
     id: number | undefined;
@@ -16,7 +17,7 @@ interface Props {
 
 export const InvokePanel = ({id, method, url, requestParams}: Props) => {
     const { message } = App.useApp();
-
+    const navigate = useNavigate();
     const [requestParamsData, setRequestParamsData] = useState<JsonApiDataRule[]>([]);
     const [responseBody, setResponseBody] = useState<string>("");
     const [editorLanguage, setEditorLanguage] = useState<string>("plaintext");
@@ -198,6 +199,8 @@ export const InvokePanel = ({id, method, url, requestParams}: Props) => {
             console.log(id);
             setEditorLanguage(getEditorFormat(res.data?.contentType));
             setResponseBody(res.data?.responseBody ?? "");
+        } else if (res.code == ResponseCode.UNAUTHORIZED){
+            navigate("/login")
         } else {
             message.error(res.message ?? "请求失败，请稍后再试");
         }
