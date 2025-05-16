@@ -1,9 +1,14 @@
 import React from 'react';
 import { MailOutlined, PhoneOutlined } from '@ant-design/icons';
-import {Button, Checkbox, Form, Input, Flex} from 'antd';
+import {Button, Form, Input, Flex} from 'antd';
+
+type LoginFormProp = {
+    phone: string;
+    captcha: string;
+}
 
 export const LoginByPhoneForm: React.FC = () => {
-    const onFinish = (values: any) => {
+    const onFinish = (values: LoginFormProp) => {
         console.log('Received values of form: ', values);
     };
 
@@ -27,15 +32,6 @@ export const LoginByPhoneForm: React.FC = () => {
                 <Flex gap={10}>
                     <Input prefix={<MailOutlined />} placeholder="验证码"/>
                     <Button>获取验证码</Button>
-                </Flex>
-            </Form.Item>
-
-            <Form.Item>
-                <Flex justify="space-between" align="center">
-                    <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>记住密码</Checkbox>
-                    </Form.Item>
-                    <a href="">忘记密码？</a>
                 </Flex>
             </Form.Item>
 

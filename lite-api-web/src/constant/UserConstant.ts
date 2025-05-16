@@ -1,0 +1,1 @@
+export const LOGIN_FORM_PROPS_KEY: string = "LoginFormProp";

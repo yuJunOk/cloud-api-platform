@@ -97,5 +97,74 @@ export default defineConfig({
 @import "tailwindcss";
 ```
 
+# 六、引入axios
 
+官网：[Axios中文文档 | Axios中文网](https://www.axios-http.cn/)
+
+```
+npm install axios
+```
+拦截器
+
+```
+// Add a request interceptor
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
+axios.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    console.log(config);
+    return config;
+  },
+  function (error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+// Add a response interceptor
+axios.interceptors.response.use(
+  function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  },
+  function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    return Promise.reject(error);
+  }
+);
+
+```
+
+在main.ts引入
+
+```
+import "@/plugins/axios";
+```
+
+# 七、引入open api
+
+代码仓库：[github.com](https://github.com/ferdikoomen/openapi-typescript-codegen)
+
+```
+npm install openapi-typescript-codegen --save-dev
+```
+
+# 八、引入状态管理valtio
+
+官网：[Valtio, makes proxy-state simple for React and Vanilla](https://valtio.dev/)
+
+```
+npm install valtio
+```
+
+# 九、引入代码编辑器
+
+```
+npm install @monaco-editor/react
+```
 

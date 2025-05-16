@@ -2,8 +2,15 @@ import React from 'react';
 import {LockOutlined, MailOutlined} from '@ant-design/icons';
 import {Button, Form, Input, Flex} from 'antd';
 
+type formProp = {
+    loginPwd: string;
+    checkPwd: string;
+    email: string;
+    captcha: string;
+}
+
 export const ResetByEmailForm: React.FC = () => {
-    const onFinish = (values: any) => {
+    const onFinish = (values: formProp) => {
         console.log('Received values of form: ', values);
     };
 

@@ -2,8 +2,16 @@ import React from 'react';
 import {LockOutlined, MailOutlined, PhoneOutlined, UserAddOutlined} from '@ant-design/icons';
 import {Button, Form, Input, Flex} from 'antd';
 
+type formProp = {
+    loginName: string;
+    loginPwd: string;
+    checkPwd: string;
+    phone: string;
+    captcha: string;
+}
+
 export const RegisterByPhoneForm: React.FC = () => {
-    const onFinish = (values: any) => {
+    const onFinish = (values: formProp) => {
         console.log('Received values of form: ', values);
     };
 

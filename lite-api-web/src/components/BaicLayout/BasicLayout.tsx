@@ -3,10 +3,11 @@ import {Layout} from 'antd';
 import {Outlet} from "react-router-dom";
 import './BasicLayout.css'
 import {BasicHeader} from "@/components/BasicHeader.tsx";
+import {GlobalFooter} from "@/components/GlobalFooter.tsx";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
-const App: React.FC = () => {
+export const BasicLayout: React.FC = () => {
 
     return (
         <Layout className="layout">
@@ -16,11 +17,7 @@ const App: React.FC = () => {
             <Content className="content">
                 <Outlet/>
             </Content>
-            <Footer className="footer">
-                Ant Design ©{new Date().getFullYear()} Created by Ant UED
-            </Footer>
+            <GlobalFooter />
         </Layout>
     );
 };
-
-export default App;
