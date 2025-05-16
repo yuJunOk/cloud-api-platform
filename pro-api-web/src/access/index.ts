@@ -2,6 +2,7 @@ import router from "@/router";
 import store from "@/store";
 import ACCESS_ENUM from "@/access/accessEnum";
 import checkAccess from "@/access/checkAccess";
+import { SYSTEM_NAME } from "@/constant/SystemConstant";
 
 router.beforeEach(async (to, from, next) => {
   // console.log("登陆用户信息", store.state.user.loginUser);
@@ -30,5 +31,6 @@ router.beforeEach(async (to, from, next) => {
       return;
     }
   }
+  document.title = (to.meta.title ?? SYSTEM_NAME) as string;
   next();
 });

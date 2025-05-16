@@ -140,7 +140,7 @@ const handleBeforeOk = async (done) => {
     // 关闭弹窗
     done();
   } else {
-    message.error(res.msg ?? "新增失败，请稍后再试");
+    message.error(res.message ?? "新增失败，请稍后再试");
     done(false);
   }
 };
