@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  # 指定环境，决定选择配置文件
+  profiles:
+    active: dev
   application:
     name: api-gateway
   main:

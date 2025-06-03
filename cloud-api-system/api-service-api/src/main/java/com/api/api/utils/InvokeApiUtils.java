@@ -1,8 +1,12 @@
 package com.api.api.utils;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.json.JSONUtil;
+import com.api.model.bo.LoginUserBo;
+import com.api.model.domain.ApiInfoDo;
+import com.api.model.dto.api.ApiInvokeByIdDto;
 import com.api.model.vo.api.ApiResponseVo;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,10 +16,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.api.clientsdk.utils.SignUtils.genNonceByTimeStamp;
+import static com.api.clientsdk.utils.SignUtils.genSign;
+
 /**
  * @author pengYuJun
  */
-public class DebugUtils {
+public class InvokeApiUtils {
+
+    /**
+     * 调用接口
+     * @return
+     */
+    public static ApiResponseVo invoke(ApiInvokeByIdDto apiInvokeByIdDto, ApiInfoDo apiInfoDo, LoginUserBo currentUser){
+        // 请求参数
+        String method = apiInfoDo.getMethod();
+        String url = apiInfoDo.getUrl();
+        Map<String, String> requestHeader = apiInvokeByIdDto.getRequestHeader();
+        Map<String, Object> requestParams = apiInvokeByIdDto.getRequestParams();
+        Map<String, String> responseHeader = apiInvokeByIdDto.getResponseHeader();
+        String body = JSONUtil.toJsonStr(requestParams);
+        // 带请求头
+        requestHeader.put("body", body);
+        requestHeader.put("accessKey", currentUser.getAccessKey());
+        requestHeader.put("sign", genSign(body, currentUser.getSecretKey()));
+        long timeStamp = System.currentTimeMillis() / 1000;
+        requestHeader.put("timestamp", String.valueOf(timeStamp));
+        int nonce = genNonceByTimeStamp(timeStamp);
+        requestHeader.put("nonce", String.valueOf(nonce));
+        // 请求
+        return request(url, method, requestHeader, requestParams, responseHeader);
+    }
 
     /**
      * 请求

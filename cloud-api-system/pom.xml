@@ -23,6 +23,7 @@
         <module>api-service-mock</module>
         <module>api-service-user</module>
         <module>api-service-api</module>
+        <module>api-client-sdk</module>
     </modules>
     <dependencies>
         <dependency>
@@ -112,6 +113,12 @@
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <!--   redisson    -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.45.1</version>
         </dependency>
         <!--  测试  -->
         <dependency>

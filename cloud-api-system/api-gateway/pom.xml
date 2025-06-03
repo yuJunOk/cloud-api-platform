@@ -20,6 +20,27 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.api.common</groupId>
+            <artifactId>api-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.api.model</groupId>
+            <artifactId>api-model</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.api.client</groupId>
+            <artifactId>api-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.api</groupId>
+            <artifactId>api-client-sdk</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!--   webflux   -->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
@@ -34,6 +55,7 @@
             <artifactId>knife4j-gateway-spring-boot-starter</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <!--   test     -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
