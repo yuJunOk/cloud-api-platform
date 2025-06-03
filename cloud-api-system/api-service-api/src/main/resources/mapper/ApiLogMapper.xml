@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.api.api.mapper.ApiLogMapper">
+
+    <resultMap id="BaseResultMap" type="com.api.model.domain.ApiLogDo">
+            <id property="id" column="id" />
+            <result property="userId" column="user_id" />
+            <result property="apiId" column="api_id" />
+            <result property="requestParams" column="request_params" />
+            <result property="responseParams" column="response_params" />
+            <result property="responseCode" column="response_code" />
+            <result property="ipAddress" column="ip_address" />
+            <result property="userAgent" column="user_agent" />
+            <result property="duration" column="duration" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+            <result property="deleted" column="deleted" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,api_id,request_params,response_params,response_code,
+        ip_address,user_agent,duration,create_time,update_time,
+        deleted
+    </sql>
+</mapper>
